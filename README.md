@@ -1,171 +1,91 @@
-# 📦 Project Setup
- 
----
+# 🚀 FastAPI Calculator with Secure User Authentication
 
-# 🧩 1. Install Homebrew (Mac Only)
+This project extends a FastAPI calculator application by implementing a secure user management system using SQLAlchemy, Pydantic, PostgreSQL, and bcrypt password hashing.
 
-> Skip this step if you're on Windows.
-
-Homebrew is a package manager for macOS.  
-You’ll use it to easily install Git, Python, Docker, etc.
-
-**Install Homebrew:**
-
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-
-**Verify Homebrew:**
-
-```bash
-brew --version
-```
-
-If you see a version number, you're good to go.
+The application includes user registration, authentication, password verification, database persistence, automated testing, Docker containerization, and a complete CI/CD pipeline using GitHub Actions.
 
 ---
 
-# 🧩 2. Install and Configure Git
+# ✨ Features
 
-## Install Git
-
-- **MacOS (using Homebrew)**
-
-```bash
-brew install git
-```
-
-- **Windows**
-
-Download and install [Git for Windows](https://git-scm.com/download/win).  
-Accept the default options during installation.
-
-**Verify Git:**
-
-```bash
-git --version
-```
+* FastAPI web application
+* SQLAlchemy User model with database persistence
+* Unique username and email constraints
+* Secure password hashing and verification using bcrypt
+* Pydantic schemas for request validation and response serialization
+* PostgreSQL database integration
+* Unit, integration, and end-to-end testing
+* Playwright browser testing
+* Docker containerization
+* Docker Compose development environment
+* GitHub Actions CI/CD pipeline
+* Docker Hub deployment
+* Trivy security scanning
 
 ---
 
-## Configure Git Globals
+# 📁 Project Structure
 
-Set your name and email so Git tracks your commits properly:
-
-```bash
-git config --global user.name "Your Name"
-git config --global user.email "your_email@example.com"
 ```
-
-Confirm the settings:
-
-```bash
-git config --list
+.
+├── app/
+│   ├── auth/              # Authentication dependencies
+│   ├── models/            # SQLAlchemy database models
+│   └── schemas/           # Pydantic schemas
+│
+├── tests/
+│   ├── unit/              # Unit tests
+│   ├── integration/        # Database and authentication tests
+│   └── e2e/               # End-to-end browser tests
+│
+├── .github/
+│   └── workflows/          # GitHub Actions CI/CD workflow
+│
+├── docker-compose.yml      # FastAPI + PostgreSQL environment
+├── Dockerfile
+├── requirements.txt
+└── main.py
 ```
 
 ---
 
-## Generate SSH Keys and Connect to GitHub
+# 🛠️ Local Setup
 
-> Only do this once per machine.
+## Install Python 3.10+
 
-1. Generate a new SSH key:
+Verify Python installation:
 
-```bash
-ssh-keygen -t ed25519 -C "your_email@example.com"
-```
-
-(Press Enter at all prompts.)
-
-2. Start the SSH agent:
-
-```bash
-eval "$(ssh-agent -s)"
-```
-
-3. Add the SSH private key to the agent:
-
-```bash
-ssh-add ~/.ssh/id_ed25519
-```
-
-4. Copy your SSH public key:
-
-- **Mac/Linux:**
-
-```bash
-cat ~/.ssh/id_ed25519.pub | pbcopy
-```
-
-- **Windows (Git Bash):**
-
-```bash
-cat ~/.ssh/id_ed25519.pub | clip
-```
-
-5. Add the key to your GitHub account:
-   - Go to [GitHub SSH Settings](https://github.com/settings/keys)
-   - Click **New SSH Key**, paste the key, save.
-
-6. Test the connection:
-
-```bash
-ssh -T git@github.com
-```
-
-You should see a success message.
-
----
-
-# 🧩 3. Clone the Repository
-
-Now you can safely clone the course project:
-
-```bash
-git clone <repository-url>
-cd <repository-directory>
-```
-
----
-
-# 🛠️ 4. Install Python 3.10+
-
-## Install Python
-
-- **MacOS (Homebrew)**
-
-```bash
-brew install python
-```
-
-- **Windows**
-
-Download and install [Python for Windows](https://www.python.org/downloads/).  
-✅ Make sure you **check the box** `Add Python to PATH` during setup.
-
-**Verify Python:**
-
-```bash
-python3 --version
-```
-or
 ```bash
 python --version
 ```
 
 ---
 
-## Create and Activate a Virtual Environment
+## Create and Activate Virtual Environment
 
-(Optional but recommended)
+Create the environment:
 
 ```bash
-python3 -m venv venv
-source venv/bin/activate   # Mac/Linux
-venv\Scripts\activate.bat  # Windows
+python -m venv venv
 ```
 
-### Install Required Packages
+Activate:
+
+### Linux / Mac
+
+```bash
+source venv/bin/activate
+```
+
+### Windows
+
+```bash
+venv\Scripts\activate
+```
+
+---
+
+## Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -173,92 +93,173 @@ pip install -r requirements.txt
 
 ---
 
-# 🐳 5. (Optional) Docker Setup
+# 🐘 Database Setup
 
-> Skip if Docker isn't used in this module.
+This project uses PostgreSQL.
 
-## Install Docker
+The included Docker Compose file starts:
 
-- [Install Docker Desktop for Mac](https://www.docker.com/products/docker-desktop/)
-- [Install Docker Desktop for Windows](https://www.docker.com/products/docker-desktop/)
+* FastAPI application
+* PostgreSQL database
+* pgAdmin database interface
+
+Start the application stack:
+
+```bash
+docker compose up --build
+```
+
+The application will be available at:
+
+```
+http://localhost:8000
+```
+
+pgAdmin will be available at:
+
+```
+http://localhost:5050
+```
+
+---
+
+# 🧪 Running Tests Locally
+
+Make sure your virtual environment is activated:
+
+```bash
+source venv/bin/activate
+```
+
+Run the complete test suite:
+
+```bash
+pytest
+```
+
+Run individual test categories:
+
+### Unit Tests
+
+```bash
+pytest tests/unit/
+```
+
+### Integration Tests
+
+```bash
+pytest tests/integration/
+```
+
+### End-to-End Tests
+
+```bash
+pytest tests/e2e/
+```
+
+The integration tests use PostgreSQL, and the CI pipeline automatically creates a PostgreSQL service container during GitHub Actions runs.
+
+---
+
+# 🐳 Docker Usage
 
 ## Build Docker Image
 
 ```bash
-docker build -t <image-name> .
+docker build -t fastapi-calculator .
 ```
 
 ## Run Docker Container
 
 ```bash
-docker run -it --rm <image-name>
+docker run -p 8000:8000 fastapi-calculator
+```
+
+For local development with PostgreSQL, use Docker Compose:
+
+```bash
+docker compose up --build
 ```
 
 ---
 
-# 🚀 6. Running the Project
+# 🐳 Docker Hub Repository
 
-- **Without Docker**:
+The Docker image for this project is available on Docker Hub:
 
-```bash
-python main.py
-```
+https://hub.docker.com/r/colinsherman/601_module9
 
-(or update this if the main script is different.)
-
-- **With Docker**:
+Pull the latest image:
 
 ```bash
-docker run -it --rm <image-name>
+docker pull colinsherman/601_module9:latest
 ```
 
 ---
 
-# 📝 7. Submission Instructions
+# ⚙️ Continuous Integration / Continuous Deployment
 
-After finishing your work:
+This project uses GitHub Actions to automate:
 
-```bash
-git add .
-git commit -m "Complete Module X"
-git push origin main
-```
+* Dependency installation
+* Unit testing
+* Integration testing
+* End-to-end testing
+* PostgreSQL test database setup
+* Docker image building
+* Security scanning with Trivy
+* Docker Hub deployment
 
-Then submit the GitHub repository link as instructed.
+The deployment workflow runs after successful tests and security checks.
 
 ---
 
-# 🔥 Useful Commands Cheat Sheet
+# 🔐 Security Implementation
 
-| Action                         | Command                                          |
-| ------------------------------- | ------------------------------------------------ |
-| Install Homebrew (Mac)          | `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` |
-| Install Git                     | `brew install git` or Git for Windows installer |
-| Configure Git Global Username  | `git config --global user.name "Your Name"`      |
-| Configure Git Global Email     | `git config --global user.email "you@example.com"` |
-| Clone Repository                | `git clone <repo-url>`                          |
-| Create Virtual Environment     | `python3 -m venv venv`                           |
-| Activate Virtual Environment   | `source venv/bin/activate` / `venv\Scripts\activate.bat` |
-| Install Python Packages        | `pip install -r requirements.txt`               |
-| Build Docker Image              | `docker build -t <image-name> .`                |
-| Run Docker Container            | `docker run -it --rm <image-name>`               |
-| Push Code to GitHub             | `git add . && git commit -m "message" && git push` |
+The application implements secure authentication practices including:
+
+* Password hashing with bcrypt
+* Password verification against stored hashes
+* JWT token generation and validation
+* Pydantic input validation
+* Database uniqueness constraints for usernames and emails
+
+Plain-text passwords are never stored in the database.
+
+---
+
+# 📦 Submission Information
+
+Repository:
+
+```
+<your GitHub repository link>
+```
+
+Docker Hub:
+
+```
+https://hub.docker.com/r/colinsherman/601_module9
+```
+
+---
+
+# Useful Commands
+
+| Action                   | Command                                            |
+| ------------------------ | -------------------------------------------------- |
+| Activate environment     | `source venv/bin/activate`                         |
+| Install packages         | `pip install -r requirements.txt`                  |
+| Run tests                | `pytest`                                           |
+| Start Docker environment | `docker compose up --build`                        |
+| Build image              | `docker build -t fastapi-calculator .`             |
+| Push Git changes         | `git add . && git commit -m "message" && git push` |
 
 ---
 
 # 📋 Notes
 
-- Install **Homebrew** first on Mac.
-- Install and configure **Git** and **SSH** before cloning.
-- Use **Python 3.10+** and **virtual environments** for Python projects.
-- **Docker** is optional depending on the project.
-
----
-
-# 📎 Quick Links
-
-- [Homebrew](https://brew.sh/)
-- [Git Downloads](https://git-scm.com/downloads)
-- [Python Downloads](https://www.python.org/downloads/)
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-- [GitHub SSH Setup Guide](https://docs.github.com/en/authentication/connecting-to-github-with-ssh)
+* Python 3.10+ is recommended.
+* Docker Desktop should be running before using Docker commands.
+* PostgreSQL is required for integration testing.
+* GitHub Actions automatically validates the project before deployment.
