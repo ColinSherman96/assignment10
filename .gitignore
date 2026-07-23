@@ -5,3 +5,7 @@ __pycache__/
 .coverage
 .pytest_cache
 htmlcov
+
+# Trivy security scan output
+trivy-report.txt
+trivy.json
